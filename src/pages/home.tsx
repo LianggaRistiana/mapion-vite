@@ -1,5 +1,6 @@
 import AddRoadButton from "@/components/atoms/add-road-button";
 import Map from "@/components/atoms/map";
+import ProfileButton from "@/components/atoms/profile-button";
 import MenuSheet from "@/components/organisms/menu-sheet";
 
 export default function Home() {
@@ -11,6 +12,10 @@ export default function Home() {
             </div>
             <div className="absolute z-1 bottom-6 right-4">
                 <AddRoadButton />
+            </div>
+
+            <div className="absolute z-1 top-4 right-4">
+                <ProfileButton />
             </div>
         </div>
     )

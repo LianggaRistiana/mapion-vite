@@ -13,7 +13,7 @@ export default function Login() {
                 <CardHeader>
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
-                            <h1 className="text-6xl text-center font-bold">Login</h1>
+                            <h1 className="text-6xl text-center font-bold">Masuk</h1>
                         </div>
                     </div>
                 </CardHeader>
@@ -23,7 +23,7 @@ export default function Login() {
             </Card>
             <div className="text-muted-foreground text-center text-sm">
                 Tidak punya akun?{' '}
-                <Link to={'/'}>
+                <Link to={'/register'}>
                     Daftar
                 </Link>
             </div>

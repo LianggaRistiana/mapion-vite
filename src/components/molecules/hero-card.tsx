@@ -8,8 +8,6 @@ import {
     CardHeader,
 } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-// import HeroTitle from "../atoms/hero-title";
 
 
 export function HeroCard() {
@@ -22,18 +20,18 @@ export function HeroCard() {
                     <div className="flex flex-col space-y-1.5">
                         <h1 className="text-6xl text-center font-bold">Mapion</h1>
                         <p className="text-center mt-2 text-muted-foreground ">
-                            Find the Place with Ease
+                            Cari jalan di bali dengan mudah
                         </p>
                     </div>
                 </div>
             </CardHeader>
             <CardContent></CardContent>
             <CardFooter className="flex justify-between gap-2">
-                <Button variant="outline" onClick={() => {toast.info("hiii")}}>
-                    Register
+                <Button variant="outline" onClick={() => navigate('/register')}>
+                    Daftar
                 </Button>
                 <Button className="flex-1" onClick={() => navigate('/login')}>
-                    Login
+                    Masuk
                 </Button>
             </CardFooter>
         </Card>

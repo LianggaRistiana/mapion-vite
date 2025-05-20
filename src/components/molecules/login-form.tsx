@@ -70,7 +70,7 @@ export default function LoginForm() {
                 // simpan token; sebaiknya httpOnly cookie, tapi contoh pakai localStorage
                 localStorage.setItem("token", payload.meta.token)
                 toast.success(payload.meta.message || "Login berhasil!")
-                navigate("/") 
+                navigate("/home") 
                 return
             }
 

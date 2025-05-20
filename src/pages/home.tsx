@@ -1,13 +1,16 @@
-// import { Button } from "@/components/ui/button";
+import AddRoadButton from "@/components/atoms/add-road-button";
+import Map from "@/components/atoms/map";
+import MenuSheet from "@/components/organisms/menu-sheet";
 
-import { HeroCard } from "@/components/molecules/hero-card"
-
-
-export default function Home(){
+export default function Home() {
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen gap-y-4 md:gap-6 px-4">
-            <HeroCard />
-            <div className="flex flex-row items-center gap-4">
+        <div className="h-screen flex flex-col">
+            <MenuSheet />
+            <div className="flex-1 relative z-0 overflow-hidden">
+                <Map />
+            </div>
+            <div className="absolute z-1 bottom-6 right-4">
+                <AddRoadButton />
             </div>
         </div>
     )

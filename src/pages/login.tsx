@@ -1,4 +1,4 @@
-import LoginForm from "@/components/molecules/login-form";
+import LoginForm from "@/components/organisms/login-form";
 import {
     Card,
     CardContent,

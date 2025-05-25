@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/molecules/regiser-form";
+import RegisterForm from "@/components/organisms/regiser-form";
 import {
     Card,
     CardContent,

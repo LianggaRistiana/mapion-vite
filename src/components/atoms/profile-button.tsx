@@ -1,4 +1,4 @@
-// import { Avatar,AvatarFallback } from "../ui/avatar";
+import { logout } from '@/services/logutService'
 
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -7,33 +7,18 @@ import { useNavigate } from "react-router-dom";
 export default function ProfileButton() {
     const navigate = useNavigate();
 
-    const handleLogOut = async () => {
+    const handleLogout = async () => {
         try {
-            const token = localStorage.getItem("token");
-
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/logout`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            const json = await res.json();
-
-            if (res.ok && json.meta?.code === 200) {
-                toast.success(json.meta.message || "Berhasil logout");
-                localStorage.removeItem("token");
-                navigate("/login");
-            } else {
-                toast.error(json.meta?.message || "Logout gagal");
-            }
+            const res = await logout()
+            localStorage.removeItem('token') 
+            toast.success(res.meta.message || 'Berhasil logout')
+            navigate('/login')
         } catch (err: any) {
-            toast.error(err.message || "Terjadi kesalahan saat logout");
+            toast.error(err.message ?? 'Gagal logout')
         }
-    };
+    }
 
-    return <Button onClick={handleLogOut}>Keluar</Button>;
+    return <Button onClick={handleLogout}>Keluar</Button>;
 }
 
 // export default function ProfileButton() {

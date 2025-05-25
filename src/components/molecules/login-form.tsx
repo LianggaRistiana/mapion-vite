@@ -15,36 +15,14 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { login } from '@/services/loginService'
+import { loginSchema } from "@/lib/schema";
 
-
-type ApiResponse = {
-    meta: {
-        code: number
-        message: string
-        token?: string
-        "token-expired"?: number
-    }
-}
-
-
-export const loginSchema = z.object({
-    email: z
-        .string({
-            required_error: "Email wajib diisi",
-        })
-        .email({ message: "Format email tidak valid" }),
-    password: z
-        .string({
-            required_error: "Password wajib diisi",
-        })
-        .min(6, { message: "Password minimal 6 karakter" }),
-})
 
 export default function LoginForm() {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
 
-    // 1. Define your form.
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -53,35 +31,27 @@ export default function LoginForm() {
         },
     })
 
-    // 2. Define a submit handler.
     const onSubmit = async (values: z.infer<typeof loginSchema>) => {
         const { email, password } = values
         setIsLoading(true)
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            })
-            const payload: ApiResponse = await res.json()
-
-            if (res.ok && payload.meta.code === 200 && payload.meta.token) {
-                // simpan token; sebaiknya httpOnly cookie, tapi contoh pakai localStorage
-                localStorage.setItem("token", payload.meta.token)
-                toast.success(payload.meta.message || "Login berhasil!")
-                navigate("/home") 
-                return
+            const payload = await login({ email, password })
+            if (payload.meta.code === 200 && payload.meta.token) {
+                localStorage.setItem('token', payload.meta.token)
+                toast.success(payload.meta.message || 'Login berhasil!')
+                navigate('/home')
+            } else {
+                throw new Error(payload.meta.message || 'Login gagal, coba lagi.')
             }
-
-            // jika code bukan 200 atau token tidak ada, anggap gagal
-            throw new Error(payload.meta.message || "Login gagal, coba lagi.")
         } catch (err: any) {
-            toast.error(err.message ?? "Terjadi kesalahan tak terduga.")
+            toast.error(err.message ?? 'Terjadi kesalahan tak terduga.')
         } finally {
             setIsLoading(false)
         }
     }
+
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

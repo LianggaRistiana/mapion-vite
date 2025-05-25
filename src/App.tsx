@@ -4,17 +4,20 @@ import Login from './pages/login';
 import { Toaster } from 'sonner';
 import Register from './pages/register';
 import Welcome from './pages/welcome';
+import { RegionProvider } from './Context/RegionContext';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route >
-          <Route index element={<Welcome />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="home" element={<Home />} />
-        </Route>
+        <Route index element={<Welcome />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route path="home" element={
+          <RegionProvider>
+            <Home />
+          </RegionProvider>
+        } />
       </Routes>
       <Toaster />
     </BrowserRouter>

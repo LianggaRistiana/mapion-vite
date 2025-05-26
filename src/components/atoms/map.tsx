@@ -1,24 +1,16 @@
 import { MapContainer, TileLayer, Polyline, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import polyline from '@mapbox/polyline';
+import GeomanControls from './geoman-editor';
+import { AnimatePresence, motion } from "motion/react"
+
+type Props = {
+  isEditing: boolean;
+  roads: Roads[];
+};
 
 
-const ruasjalan = [
-  {
-    id: 3418,
-    paths: "l`is@asr~T@UHiAZyCD_D",
-    nama_ruas: "Contoh Ruas Jalan 1",
-  },
-  {
-    id: 3419,
-    paths: "t`is@ytq~T@SBa@Ru@", // Contoh path lain
-    nama_ruas: "Contoh Ruas Jalan 2",
-  },
-];
-
-
-
-export default function Map() {
+export default function Map({ isEditing, roads }: Props) {
   return (
     <MapContainer
       center={[-8.782802, 115.178150]}
@@ -33,14 +25,25 @@ export default function Map() {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {ruasjalan.map((ruas) => {
-        const decoded = polyline.decode(ruas.paths);
+      {roads?.map((road) => {
+        const decoded = polyline.decode(road.paths);
         return (
-          <Polyline key={ruas.id} positions={decoded} color="blue">
-            <Popup>{ruas.nama_ruas}</Popup>
+          <Polyline key={road.id} positions={decoded} color="blue">
+            <Popup>{road.nama_ruas}</Popup>
           </Polyline>
         );
       })}
+      <AnimatePresence>
+        {isEditing && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <GeomanControls />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </MapContainer>
   );
 }

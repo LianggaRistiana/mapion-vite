@@ -1,7 +1,6 @@
 import { Button } from "../ui/button";
-import { Card, CardFooter, CardHeader } from "../ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { AnimatePresence, motion } from "motion/react"
-
 interface Props {
     isShowed: boolean,
     onClose: () => void
@@ -18,9 +17,11 @@ export default function AddRoadForm({ isShowed, onClose }: Props) {
                     exit={{ x: 20, opacity: 0 }}
                 >
                     <Card className="w-[350px]">
-                        <CardHeader>
-                            <h1 className="text-sm text-center font-bold">Tambah Jalan</h1>
-                        </CardHeader>
+                        <CardContent>
+                            <CardHeader>
+                                <h1 className="text-sm text-center font-bold">Tambah Jalan</h1>
+                            </CardHeader>
+                        </CardContent>
                         <CardFooter className="flex justify-between">
                             <Button variant={'outline'} onClick={onClose}>
                                 Batal
@@ -36,3 +37,4 @@ export default function AddRoadForm({ isShowed, onClose }: Props) {
         </AnimatePresence>
     )
 }
+

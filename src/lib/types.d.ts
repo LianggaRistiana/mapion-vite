@@ -51,6 +51,36 @@ type Desa = {
   desa: string;
 };
 
+type Roads = {
+  id: number;
+  paths: string; 
+  desa_id: number;
+  kode_ruas: string;
+  nama_ruas: string;
+  panjang: number;
+  lebar: number;
+  eksisting_id: number;
+  kondisi_id: number;
+  jenisjalan_id: number;
+  keterangan: string;
+};
+
+type EksistingRoad = {
+  id: number;
+  eksisting: string;
+};
+
+type RoadCondition = {
+  id: number;
+  kondisi: string;
+};
+
+type RoadType = {
+  id: number;
+  jenisjalan: string;
+};
+
+
 type RegionContext = {
   provinsi: Provinsi[];
   kabupaten: Kabupaten[];

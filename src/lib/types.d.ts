@@ -80,6 +80,16 @@ type RoadType = {
   jenisjalan: string;
 };
 
+type RoadStatsContext = {
+  // roads: Roads[];
+  eksistingRoads: EksistingRoad[];
+  roadConditions: RoadCondition[];
+  roadTypes: RoadType[];
+  setEksistingRoads: (data: EksistingRoad[]) => void;
+  setRoadConditions: (data: RoadCondition[]) => void;
+  setRoadTypes: (data: RoadType[]) => void;
+}
+
 
 type RegionContext = {
   provinsi: Provinsi[];

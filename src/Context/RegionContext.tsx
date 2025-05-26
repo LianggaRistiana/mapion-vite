@@ -34,10 +34,10 @@ export function RegionProvider({ children }: { children: ReactNode }) {
 
 
   // Fungsi filter kabupaten berdasarkan provinsi id
-function getKabupatenByProvinsi(provinsiId: string): Kabupaten[] {
-  if (!provinsiId) return [];
-  return kabupaten.filter(kab => kab.prov_id === Number(provinsiId));
-}
+  function getKabupatenByProvinsi(provinsiId: string): Kabupaten[] {
+    if (!provinsiId) return [];
+    return kabupaten.filter(kab => kab.prov_id === Number(provinsiId));
+  }
 
 
   // Fungsi filter kecamatan berdasarkan kabupaten id

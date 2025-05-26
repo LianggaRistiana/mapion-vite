@@ -60,4 +60,20 @@ type RegionContext = {
   setKabupaten: (data: Kabupaten[]) => void;
   setKecamatan: (data: Kecamatan[]) => void;
   setDesa: (data: Desa[]) => void;
+
+  selectedProvinsi: string;
+  setSelectedProvinsi: (provinsi: string) => void;
+
+  selectedKabupaten: string;
+  setSelectedKabupaten: (kabupaten: string) => void;
+
+  selectedKecamatan: string;
+  setSelectedKecamatan: (kecamatan: string) => void;
+
+  selectedDesa: string;
+  setSelectedDesa: (desa: string) => void;
+
+  getKabupatenByProvinsi: (provinsiId: string) => Kabupaten[];
+  getKecamatanByKabupaten: (kabupatenId: string) => Kecamatan[];
+  getDesaByKecamatan: (kecamatanId: string) => Desa[];
 };

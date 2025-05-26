@@ -10,6 +10,6 @@ type RegionResponse = {
 };
 
 export const getRegion = async (): Promise<RegionResponse> => {
-  const res = await apiClient.post<RegionResponse>("/mregion");
+  const res = await apiClient.get<RegionResponse>("/mregion");
   return res.data;
 };

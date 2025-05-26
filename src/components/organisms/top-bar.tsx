@@ -1,24 +1,63 @@
 import { useRegion } from "@/hooks/use-region";
-import FilterButton from "../atoms/filter-button";
-
+import FilterDropdown from "../molecules/filter-dropdown";
 
 export default function TopBar() {
-    const { provinsi, kabupaten, kecamatan, desa } = useRegion();
+    const {
+        provinsi,
+        selectedProvinsi,
+        selectedKabupaten,
+        selectedKecamatan,
+        selectedDesa,
+        setSelectedProvinsi,
+        setSelectedKabupaten,
+        setSelectedKecamatan,
+        setSelectedDesa,
+        getKabupatenByProvinsi,
+        getKecamatanByKabupaten,
+        getDesaByKecamatan
+    } = useRegion();
 
+    const kabupaten = getKabupatenByProvinsi(selectedProvinsi);
+    const kecamatan = getKecamatanByKabupaten(selectedKabupaten);
+    const desa = getDesaByKecamatan(selectedKecamatan);
     return (
         <div className="absolute z-1 top-4 flex gap-4 px-8">
-            <FilterButton onClick={() => { }} isSelected={false} >
-                {`( ${provinsi.length.toString()} ) Provinsi`}
-            </FilterButton>
-            <FilterButton onClick={() => { }} isSelected={false} >
-                {`( ${kabupaten.length.toString()} ) Kabupaten`}
-            </FilterButton>
-            <FilterButton onClick={() => { }} isSelected={false} >
-                {`( ${kecamatan.length.toString()} ) Kecamatan`}
-            </FilterButton>
-            <FilterButton onClick={() => { }} isSelected={false} >
-                {`( ${desa.length.toString()} ) Desa`}
-            </FilterButton>
+            <FilterDropdown
+                title="Provinsi"
+                selectedValue={selectedProvinsi}
+                setSelectedValue={setSelectedProvinsi}
+                data={provinsi.map((p) => ({
+                    value: p.id.toString(), 
+                    item: p.provinsi,
+                }))}
+            />
+            <FilterDropdown
+                title="Kabupaten"
+                selectedValue={selectedKabupaten}
+                setSelectedValue={setSelectedKabupaten}
+                data={kabupaten.map((p) => ({
+                    value: p.id.toString(), 
+                    item: p.kabupaten,
+                }))}
+            />
+            <FilterDropdown
+                selectedValue={selectedKecamatan}
+                setSelectedValue={setSelectedKecamatan}
+                title="Kecamatan"
+                data={kecamatan.map((p) => ({
+                    value: p.id.toString(),
+                    item: p.kecamatan,
+                }))}
+            />
+            <FilterDropdown
+                title="Desa"
+                selectedValue={selectedDesa}
+                setSelectedValue={setSelectedDesa}
+                data={desa.map((p) => ({
+                    value: p.id.toString(), 
+                    item: p.desa,
+                }))}
+            />
         </div>
     );
 }

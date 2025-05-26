@@ -13,7 +13,7 @@ export default function FilterButton({
     onClick,
 }: Props
 ) {
-    return <Button onClick={onClick} variant={isSelected ? 'default' : 'outline'} size={"sm"}>
+    return <Button onClick={onClick} variant={isSelected ? 'default' : 'outline'} size={"sm"} className="rounded-lg">
         {children}
     </Button>
 }

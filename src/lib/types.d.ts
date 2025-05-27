@@ -88,6 +88,16 @@ type RoadStatsContext = {
   setEksistingRoads: (data: EksistingRoad[]) => void;
   setRoadConditions: (data: RoadCondition[]) => void;
   setRoadTypes: (data: RoadType[]) => void;
+  selectedEksistingRoad: string;
+  setSelectedEksistingRoad: (eksistingRoad: string) => void;
+  selectedRoadCondition: string;
+  setSelectedRoadCondition: (roadCondition: string) => void;
+  selectedRoadType: string;
+  setSelectedRoadType: (roadType: string) => void;
+  roadLength: number;
+  setRoadLength: (length: number) => void;
+  roadPath: string;
+  setRoadPath: (path: string) => void;
 }
 
 

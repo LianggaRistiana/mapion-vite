@@ -2,10 +2,9 @@ import { MapContainer, TileLayer, Polyline, Popup } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import polyline from '@mapbox/polyline';
 import GeomanControls from './geoman-editor';
-import { AnimatePresence, motion } from "motion/react"
 
 type Props = {
-  isEditing: boolean;
+  isEditing?: boolean;
   roads: Roads[];
 };
 
@@ -33,17 +32,15 @@ export default function Map({ isEditing, roads }: Props) {
           </Polyline>
         );
       })}
-      <AnimatePresence>
-        {isEditing && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <GeomanControls />
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+      {
+        isEditing &&
+        <GeomanControls />
+      }
+
+
+
+
     </MapContainer>
   );
 }

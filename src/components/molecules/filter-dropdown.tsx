@@ -34,7 +34,7 @@ export default function FilterDropdown({ data, title, selectedValue, setSelected
 
     return (
         <Select value={selectedValue} onValueChange={handleChange}>
-            <SelectTrigger className="w-fit bg-background">
+            <SelectTrigger className="w-full bg-background">
                 <SelectValue placeholder={title} />
             </SelectTrigger>
             <SelectContent>

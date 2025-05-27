@@ -5,21 +5,26 @@ import { Toaster } from 'sonner';
 import Register from './pages/register';
 import Welcome from './pages/welcome';
 import { RegionProvider } from './Context/RegionContext';
+import AddRoad from './pages/add-road';
+import { RoadStatProvider } from './Context/RoadStatsContext';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Welcome />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="home" element={
-          <RegionProvider>
-            <Home />
-          </RegionProvider>
-        } />
-      </Routes>
-      <Toaster />
-    </BrowserRouter>
+    <RegionProvider>
+      <RoadStatProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<Welcome />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="home" element={
+              <Home />
+            } />
+            <Route path="add-road" element={<AddRoad />} />
+          </Routes>
+          <Toaster />
+        </BrowserRouter>
+      </RoadStatProvider>
+    </RegionProvider>
   );
 }

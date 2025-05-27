@@ -4,12 +4,17 @@ import { useMap } from 'react-leaflet';
 import { useEffect } from 'react';
 import 'leaflet';
 import '@geoman-io/leaflet-geoman-free';
+import { useRoadStats } from '@/hooks/use-road-stats';
+import polyline from '@mapbox/polyline';
 
 function GeomanControls() {
   const map = useMap();
+  const {
+    setRoadLength,
+    setRoadPath
+  } = useRoadStats();
 
   useEffect(() => {
-    // Tambahkan kontrol Geoman
     map.pm.addControls({
       position: 'topright',
       drawCircle: false,
@@ -26,16 +31,37 @@ function GeomanControls() {
       drawText: false
     });
 
-    // Event saat objek dibuat
-    map.on('pm:create', (e: any) => {
+    const onCreate = (e: any) => {
       const layer = e.layer;
-      console.log('Objek baru dibuat:', layer.toGeoJSON());
-    });
+
+      if (!layer.getLatLngs) return;
+
+      const latlngs = layer.getLatLngs(); // Array of LatLng
+
+      // Hitung panjang polyline (dalam meter)
+      let length = 0;
+      for (let i = 0; i < latlngs.length - 1; i++) {
+        length += map.distance(latlngs[i], latlngs[i + 1]);
+      }
+
+      setRoadLength(length); // simpan panjang
+
+      // Encode polyline
+      const encoded = polyline.encode(latlngs.map((latlng: L.LatLng) => [latlng.lat, latlng.lng]));
+      setRoadPath(encoded); // simpan path
+
+      console.log('Polyline:', latlngs);
+      console.log('Length:', length.toFixed(2), 'meters');
+      console.log('Encoded path:', encoded);
+    };
+
+    map.on('pm:create', onCreate);
 
     return () => {
-      map.off('pm:create');
+      map.off('pm:create', onCreate);
+      map.pm.removeControls();
     };
-  }, [map]);
+  }, [map, setRoadLength, setRoadPath]);
 
   return null;
 }

@@ -3,7 +3,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { RoadSchema } from "@/lib/schema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import FormFields from "../molecules/form-fields";
 import { LoaderCircle } from "lucide-react";
@@ -113,7 +113,6 @@ export default function RoadForm() {
 
     }
 
-
     return (
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -209,7 +208,7 @@ export default function RoadForm() {
                         item: p.eksisting,
                     }))}
                 />
-                <Button className="w-full" type="submit" disabled={isLoading}>
+                <Button className="w-full sticky bottom-0" type="submit" disabled={isLoading}>
                     {isLoading && <LoaderCircle className="h-4 w-4 animate-spin" />}
                     Simpan
                 </Button>

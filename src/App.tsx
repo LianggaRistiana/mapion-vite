@@ -7,6 +7,7 @@ import Welcome from './pages/welcome';
 import { RegionProvider } from './Context/RegionContext';
 import AddRoad from './pages/add-road';
 import { RoadStatProvider } from './Context/RoadStatsContext';
+import Road from './pages/road';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
               <Home />
             } />
             <Route path="add-road" element={<AddRoad />} />
+            <Route path="road" element={<Road />} />
           </Routes>
           <Toaster />
         </BrowserRouter>

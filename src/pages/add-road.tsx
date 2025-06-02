@@ -1,13 +1,13 @@
 import Map from "@/components/atoms/map";
 import RoadForm from "@/components/organisms/road-form";
 import { useRoadStats } from "@/hooks/use-road-stats";
+import MainLayout from "@/layouts/main-layout";
 import { getEksistingRoad } from "@/services/getEksistingRoad";
 import { getRoadCondition } from "@/services/getRoadConditionService";
 import { getRoadType } from "@/services/getRoadTypeService";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { set } from "zod";
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export default function AddRoad() {
     const { setRoadTypes, setRoadConditions, setEksistingRoads, roadLength } = useRoadStats();
@@ -27,7 +27,7 @@ export default function AddRoad() {
     const fetchRoadCondition = async () => {
         try {
             const roadConditions = await getRoadCondition();
-            // console.log(roadType);
+            // console.log(roadConditions);
             setRoadConditions(roadConditions.eksisting);
         } catch (err: any) {
             console.log(err);
@@ -55,17 +55,20 @@ export default function AddRoad() {
         fetchEksistingRoad();
     }, []);
 
-    return <div className="h-screen grid grid-cols-[1fr_2fr] ">
-        <div className="grid grid-cols-1 h-fit gap-4 px-8 py-8">
-            <p className="font-bold text-lg">Tambah Jalan</p>
-            <RoadForm></RoadForm>
-        </div>
-        <div className="w-full h-[100vh] overflow-hidden relative">
-            <div className="absolute top-6 left-6 p-2 rounded-md bg-background shadow-md z-[9999]">
-                <p className="font-bold">{roadLength} meter</p>
+    return <MainLayout>
+        <div className="h-full grid grid-cols-[1fr_2fr] ">
+            <div className="grid grid-cols-1 h-fit gap-4 px-4">
+                <p className="font-bold text-lg">Tambah Jalan</p>
+                <ScrollArea className="h-[80vh] w-full rounded-md border p-4 relative">
+                    <RoadForm></RoadForm>
+                </ScrollArea>
             </div>
-            <Map isEditing roads={[]}></Map>
+            <div className="w-full h-full relative">
+                <div className="absolute top-6 left-6 p-2 rounded-md bg-background shadow-md z-[9999]">
+                    <p className="font-bold">{roadLength} meter</p>
+                </div>
+                <Map isEditing roads={[]}></Map>
+            </div>
         </div>
-
-    </div>
+    </MainLayout>
 }

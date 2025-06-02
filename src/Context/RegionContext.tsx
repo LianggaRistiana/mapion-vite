@@ -52,6 +52,13 @@ export function RegionProvider({ children }: { children: ReactNode }) {
     return desa.filter(d => d.kec_id === Number(kecamatanId));
   };
 
+  const getDesaById = (desaId: string): string => {
+    const id = Number(desaId);
+    if (isNaN(id)) return "Tidak ada desa";
+    return desa.find(d => d.id === id)?.desa || "Tidak ada desa";
+  }
+
+
 
   return (
     <RegionContext.Provider
@@ -75,6 +82,7 @@ export function RegionProvider({ children }: { children: ReactNode }) {
         getKabupatenByProvinsi,
         getKecamatanByKabupaten,
         getDesaByKecamatan,
+        getDesaById
       }}
     >
       {children}

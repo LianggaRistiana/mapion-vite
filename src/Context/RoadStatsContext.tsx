@@ -14,6 +14,18 @@ export function RoadStatProvider({ children }: { children: ReactNode }) {
     const [roadLength, setRoadLength] = useState<number>(0)
     const [roadPath, setRoadPath] = useState<string>("")
 
+    const getRoadConditionById = (id: number): string => {
+        return roadConditions.find(roadCondition => roadCondition.id === id)?.kondisi || "-"
+    }
+
+    const getRoadTypeById = (id: number): string => {
+        return roadTypes.find(roadType => roadType.id === id)?.jenisjalan || "-"
+    }
+
+    const getEksistingRoadById = (id: number): string => {
+        return eksistingRoads.find(eksistingRoad => eksistingRoad.id === id)?.eksisting || "-"
+    }
+
     return <RoadStatsContext.Provider
         value={{
             roadTypes,
@@ -31,7 +43,10 @@ export function RoadStatProvider({ children }: { children: ReactNode }) {
             roadLength,
             roadPath,
             setRoadLength,
-            setRoadPath
+            setRoadPath,
+            getRoadConditionById,
+            getRoadTypeById,
+            getEksistingRoadById
         }}
     >
         {children}

@@ -98,6 +98,10 @@ type RoadStatsContext = {
   setRoadLength: (length: number) => void;
   roadPath: string;
   setRoadPath: (path: string) => void;
+
+  getRoadConditionById: (id: number) => string;
+  getRoadTypeById: (id: number) => string;
+  getEksistingRoadById: (id: number) => string;
 }
 
 
@@ -126,4 +130,6 @@ type RegionContext = {
   getKabupatenByProvinsi: (provinsiId: string) => Kabupaten[];
   getKecamatanByKabupaten: (kabupatenId: string) => Kecamatan[];
   getDesaByKecamatan: (kecamatanId: string) => Desa[];
+  
+  getDesaById: (desaId: string) => string;
 };

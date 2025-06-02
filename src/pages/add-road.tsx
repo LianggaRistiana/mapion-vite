@@ -8,9 +8,12 @@ import { getRoadType } from "@/services/getRoadTypeService";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area"
+import useInitialFetch from "@/hooks/use-initial-fetch";
 
 export default function AddRoad() {
     const { setRoadTypes, setRoadConditions, setEksistingRoads, roadLength } = useRoadStats();
+
+    useInitialFetch();
 
     const fetchRoadType = async () => {
         try {

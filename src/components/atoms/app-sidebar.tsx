@@ -18,7 +18,7 @@ const items = [
     icon: MapIcon,
   },
   {
-    title: "Road",
+    title: "Jalan",
     url: "/road",
     icon: MapPinnedIcon,
   },

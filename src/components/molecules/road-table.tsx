@@ -2,6 +2,7 @@ import {
     type ColumnDef,
     flexRender,
     getCoreRowModel,
+    isRowSelected,
     useReactTable,
 } from "@tanstack/react-table"
 
@@ -18,12 +19,14 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     onRowClick: (row: TData) => void
+    selectedRow?: TData | null
 }
 
 export function RoadTable<TData, TValue>({
     columns,
     data,
     onRowClick,
+    selectedRow
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
@@ -39,7 +42,7 @@ export function RoadTable<TData, TValue>({
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead key={header.id}>
+                                    <TableHead key={header.id} className="font-bold">
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -59,9 +62,12 @@ export function RoadTable<TData, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                                 onClick={() => onRowClick(row.original)}
+                                // className={selectedRow === row.original ? "bg-muted rounded-sm border-lg border-primary" : ""}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell key={cell.id}
+                                        className={selectedRow === row.original ? "bg-primary text-accent" : ""}
+                                    >
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

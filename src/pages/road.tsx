@@ -9,10 +9,13 @@ import { useRegion } from "@/hooks/use-region";
 import useInitialFetch from "@/hooks/use-initial-fetch";
 import { useRoadStats } from "@/hooks/use-road-stats";
 import { Button } from "@/components/ui/button";
-import { Trash2Icon } from "lucide-react";
+import { Trash2Icon, X } from "lucide-react";
+import RoadInfo from "@/components/atoms/road-info";
 
 export default function Road() {
     const [roads, setRoads] = useState<Roads[]>([]);
+    const [selectedRoad, setSelectedRoad] = useState<Roads | null>(null);
+
     const {
         getDesaById,
     } = useRegion();
@@ -41,7 +44,7 @@ export default function Road() {
             header: "Jalan",
             cell: ({ row }) => {
                 return <div>
-                    <p className="font-bold">{row.original.nama_ruas}</p>
+                    <p className="">{row.original.nama_ruas}</p>
                     <p className="font-sm opacity-50">{getDesaById(row.original.desa_id.toString())}</p>
                 </div>
             }
@@ -74,12 +77,15 @@ export default function Road() {
         {
             accessorKey: "panjang",
             header: "Panjang",
+            cell: ({ row }) => {
+                return Math.ceil(row.original.panjang) + " meter"
+            }
         },
         {
             header: "Aksi",
             cell: ({ row }) => {
                 return <div className="flex gap-2">
-                    <Button>Edit Jalan</Button>
+                    <Button className="bg-orange-400">Edit Jalan</Button>
                     <Button variant={"destructive"}><Trash2Icon /></Button>
                 </div>
             }
@@ -96,10 +102,11 @@ export default function Road() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 h-full pb-8 overflow-hidden
                   lg:auto-rows-fr grid-rows-2 lg:grid-rows-1">
             {/* <div className="overflow-hidden h-full"> */}
-            <RoadTable columns={roadColumns} data={roads} onRowClick={(row) => alert(row.nama_ruas)} />
+            <RoadTable columns={roadColumns} data={roads} onRowClick={(row) => setSelectedRoad(row)} selectedRow={selectedRoad} />
             {/* </div> */}
             <div className="w-full h-full overflow-hidden relative">
-                <Map roads={roads} />
+                <Map roads={roads} selectedRoad={selectedRoad} onPathClick={(road) => setSelectedRoad(road)} />
+                <RoadInfo road={selectedRoad} onClose={() => setSelectedRoad(null)} />
             </div>
         </div>
     </MainLayout>

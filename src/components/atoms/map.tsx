@@ -1,37 +1,39 @@
-import { MapContainer, TileLayer, Polyline, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
 import polyline from '@mapbox/polyline';
 import GeomanControls from './geoman-editor';
+import MapFocus from './map-focus';
+import RoadPolyline from './road-polyline';
 
 type Props = {
   isEditing?: boolean;
   roads: Roads[];
+  selectedRoad?: Roads | null;
+  onPathClick?: (road: Roads) => void;
 };
 
 
-export default function Map({ isEditing, roads }: Props) {
-  const polylineColor = (type: string): string => {
-    if (type === '1') return "green";
-    if (type === '2') return "blue";
-    if (type === '3') return "red";
-    return "blue";
-  }
+export default function Map({ isEditing, roads, selectedRoad, onPathClick }: Props) {
 
-  const getDashArray = (jenisJalanId: number): string | undefined => {
-  switch (jenisJalanId) {
-    case 1: 
-      return "0"; 
-    case 2: 
-      return "10 5"; 
-    case 3: 
-      return "1 5"; 
-    default:
-      return undefined; 
-  }
-}
+  // const polylineColor = (type: string): string => {
+  //   if (type === '1') return "green";
+  //   if (type === '2') return "blue";
+  //   if (type === '3') return "red";
+  //   return "blue";
+  // }
 
-
-
+  // const getDashArray = (jenisJalanId: number): string | undefined => {
+  //   switch (jenisJalanId) {
+  //     case 1:
+  //       return "0";
+  //     case 2:
+  //       return "10 5";
+  //     case 3:
+  //       return "1 5";
+  //     default:
+  //       return undefined;
+  //   }
+  // }
 
   return (
     <MapContainer
@@ -39,6 +41,7 @@ export default function Map({ isEditing, roads }: Props) {
       zoom={13}
       zoomControl={false}
       style={{ height: "100%", width: "100%" }}
+      className='z-0'
     >
 
       {/* <MapView center={center} /> */}
@@ -47,8 +50,18 @@ export default function Map({ isEditing, roads }: Props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {roads?.map((road) => {
+      {roads.map((road) => (
+        <RoadPolyline
+          key={road.id}
+          road={road}
+          isSelected={road.id === selectedRoad?.id}
+          onPathClick={onPathClick}
+        />
+      ))}
+
+      {/* {roads?.map((road) => {
         const decoded = polyline.decode(road.paths);
+        
         return (
           <Polyline
             key={road.id}
@@ -56,20 +69,46 @@ export default function Map({ isEditing, roads }: Props) {
             color={polylineColor(road.jenisjalan_id.toString())}
             weight={road.jenisjalan_id * 2.5}
             dashArray={getDashArray(road.kondisi_id)}
-            >
-            <Popup>{road.nama_ruas}</Popup>
+          >
+            <Popup >
+              <div>
+                <p className="font-bold">{road.nama_ruas}</p>
+                <p className="font-sm opacity-50">{road.keterangan}</p>
+              </div>
+            </Popup>
           </Polyline>
         );
-      })}
+      })} */}
 
       {
         isEditing &&
         <GeomanControls />
       }
 
+      {
+        selectedRoad && <>
+          <MapFocus positions={polyline.decode(selectedRoad.paths)} />
+          {/* <Popup position={polyline.decode(selectedRoad.paths)[polyline.decode(selectedRoad.paths).length/2]}>
+            <div>
+              <p className="font-bold">{selectedRoad.nama_ruas} aaaaaa</p>
+              <p className="text-sm opacity-50">{selectedRoad.keterangan}</p>
+            </div>
+          </Popup> */}
+
+        </>
+
+      }
 
 
-
+      {/* {
+        selectedRoad && 
+        <Popup position={polyline.decode(selectedRoad.paths)[0]}>
+          <div>
+            <p className="font-bold">{selectedRoad.nama_ruas} aaaaaa</p>
+            <p className="text-sm opacity-50">{selectedRoad.keterangan}</p>
+          </div>
+        </Popup>
+      } */}
     </MapContainer>
   );
 }

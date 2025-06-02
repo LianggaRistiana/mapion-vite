@@ -9,8 +9,10 @@ import { useRegion } from "@/hooks/use-region";
 import useInitialFetch from "@/hooks/use-initial-fetch";
 import { useRoadStats } from "@/hooks/use-road-stats";
 import { Button } from "@/components/ui/button";
-import { Trash2Icon, X } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import RoadInfo from "@/components/atoms/road-info";
+import { deleteRoad } from "@/services/deleteRoadService";
+import { set } from "zod";
 
 export default function Road() {
     const [roads, setRoads] = useState<Roads[]>([]);
@@ -36,6 +38,25 @@ export default function Road() {
                 err.response?.data?.meta?.message || "Terjadi kesalahan tak terduga.";
             toast.error(message);
         }
+    }
+
+    const deleteRoadHandle = async (id: number) => {
+        try {
+            const payload = await deleteRoad(id);
+            if (payload.code === 200) {
+                toast.success("Berhasil menghapus jalan");
+                setSelectedRoad(null); 
+                fetchRoads();
+            } else {
+                toast.error(payload.message);
+            }
+        } catch (err: any) {
+            console.log(err);
+            const message =
+                err.response?.data?.meta?.message || "Terjadi kesalahan tak terduga.";
+            toast.error(message);
+        }
+
     }
 
     const roadColumns: ColumnDef<Roads>[] = [
@@ -86,7 +107,7 @@ export default function Road() {
             cell: ({ row }) => {
                 return <div className="flex gap-2">
                     <Button className="bg-orange-400">Edit Jalan</Button>
-                    <Button variant={"destructive"}><Trash2Icon /></Button>
+                    <Button variant={"destructive"} onClick={() => deleteRoadHandle(row.original.id)}><Trash2Icon /></Button>
                 </div>
             }
         }

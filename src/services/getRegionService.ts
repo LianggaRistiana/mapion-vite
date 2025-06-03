@@ -10,6 +10,7 @@ type RegionResponse = {
 };
 
 export const getRegion = async (): Promise<RegionResponse> => {
+  console.log("Fetch Region");
   const res = await apiClient.get<RegionResponse>("/mregion");
   return res.data;
 };

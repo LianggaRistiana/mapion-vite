@@ -7,13 +7,14 @@ import RoadPolyline from './road-polyline';
 
 type Props = {
   isEditing?: boolean;
+  oldRoad?: string;
   roads: Roads[];
   selectedRoad?: Roads | null;
   onPathClick?: (road: Roads) => void;
 };
 
 
-export default function Map({ isEditing, roads, selectedRoad, onPathClick }: Props) {
+export default function Map({ isEditing, roads, selectedRoad, onPathClick, oldRoad }: Props) {
 
   // const polylineColor = (type: string): string => {
   //   if (type === '1') return "green";
@@ -82,7 +83,7 @@ export default function Map({ isEditing, roads, selectedRoad, onPathClick }: Pro
 
       {
         isEditing &&
-        <GeomanControls />
+        <GeomanControls oldRoad={oldRoad}/>
       }
 
       {

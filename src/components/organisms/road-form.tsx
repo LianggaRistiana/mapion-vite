@@ -3,7 +3,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { RoadSchema } from "@/lib/schema";
-import { useEffect, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import FormFields from "../molecules/form-fields";
 import { LoaderCircle } from "lucide-react";
@@ -13,49 +13,93 @@ import { useRoadStats } from "@/hooks/use-road-stats";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { addRoad } from "@/services/addRoad";
+import { editRoad } from "@/services/editRoadService";
+import { useNavigate } from "react-router-dom";
 
+type Props = {
+    road?: Roads | null;
+    regionId?: RegionID | null;
+    roadId?: number;
+}
 
-export default function RoadForm() {
+export default function RoadForm({ road, regionId, roadId }: Props) {
+    const navigate = useNavigate()
+
     const [isLoading, setIsLoading] = useState(false)
+
+    const [selectedRoadType, setSelectedRoadType] = useState<string>(road?.jenisjalan_id?.toString() || "");
+    const [selectedRoadCondition, setSelectedRoadCondition] = useState<string>(road?.kondisi_id?.toString() || "")
+    const [selectedEksistingRoad, setSelectedEksistingRoad] = useState<string>(road?.eksisting_id?.toString() || "")
 
     const {
         provinsi,
-        selectedProvinsi,
-        selectedKabupaten,
-        selectedKecamatan,
-        selectedDesa,
-        setSelectedProvinsi,
-        setSelectedKabupaten,
-        setSelectedKecamatan,
-        setSelectedDesa,
         getKabupatenByProvinsi,
         getKecamatanByKabupaten,
-        getDesaByKecamatan
+        getDesaByKecamatan,
     } = useRegion();
+
+    const [selectedProvinsi, setSelectedProvinsi] = useState<string>(regionId?.provinsiId || "");
+    const [selectedKabupaten, setSelectedKabupaten] = useState<string>(regionId?.kabupatenId || "");
+    const [selectedKecamatan, setSelectedKecamatan] = useState<string>(regionId?.kecamatanId || "");
+    const [selectedDesa, setSelectedDesa] = useState<string>(road?.desa_id?.toString() || "");
+
+    const prevProvinsi = useRef("");
+    const prevKabupaten = useRef("");
+    const prevKecamatan = useRef("");
+
+    useEffect(() => {
+        if (prevProvinsi.current !== "" && prevProvinsi.current !== selectedProvinsi) {
+            console.log("provinsi reset");
+            setSelectedKabupaten("");
+            setSelectedKecamatan("");
+            setSelectedDesa("");
+        }
+        prevProvinsi.current = selectedProvinsi;
+    }, [selectedProvinsi]);
+
+    useEffect(() => {
+        if (prevKabupaten.current !== "" && prevKabupaten.current !== selectedKabupaten) {
+            setSelectedKecamatan("");
+            setSelectedDesa("");
+        }
+        prevKabupaten.current = selectedKabupaten;
+    }, [selectedKabupaten]);
+
+    useEffect(() => {
+        if (prevKecamatan.current !== "" && prevKecamatan.current !== selectedKecamatan) {
+            setSelectedDesa("");
+        }
+        prevKecamatan.current = selectedKecamatan;
+    }, [selectedKecamatan]);
+
 
     const {
         roadTypes,
         roadConditions,
         eksistingRoads,
-        selectedRoadType,
-        selectedRoadCondition,
-        selectedEksistingRoad,
-        setSelectedRoadType,
-        setSelectedRoadCondition,
-        setSelectedEksistingRoad,
         roadLength,
-        roadPath
+        roadPath,
+        setRoadPath,
     } = useRoadStats();
+
+    useEffect(() => {
+        // setRoadLength(road?.panjang || 0);
+        setRoadPath(road?.paths || "");
+    }, [])
 
     const kabupaten = getKabupatenByProvinsi(selectedProvinsi);
     const kecamatan = getKecamatanByKabupaten(selectedKabupaten);
     const desa = getDesaByKecamatan(selectedKecamatan);
 
+
     const form = useForm<z.infer<typeof RoadSchema>>({
         resolver: zodResolver(RoadSchema),
-        // defaultValues: {
-        //     width: 0,
-        // },
+        defaultValues: {
+            width: road?.lebar || 0,
+            roadCode: road?.kode_ruas || "",
+            roadName: road?.nama_ruas || "",
+            desc: road?.keterangan || "",
+        },
     })
 
     const roadField: FieldConfig[] = [
@@ -73,8 +117,22 @@ export default function RoadForm() {
             toast.error("Desa wajib dipilih");
             return;
         }
+        if (selectedEksistingRoad === "") {
+            toast.error("Eksisting jalan wajib dipilih");
+            return;
+        }
+
+        if (selectedRoadCondition === "") {
+            toast.error("Kondisi jalan wajib dipilih");
+            return;
+        }
+
+        if (selectedRoadType === "") {
+            toast.error("Jenis jalan wajib dipilih");
+            return;
+        }
+
         console.log(values);
-        toast.success("HAII");
 
         setIsLoading(true);
         const {
@@ -85,21 +143,38 @@ export default function RoadForm() {
         } = values;
 
         try {
-            const payload = await addRoad({
-                kode_ruas: roadCode,
-                nama_ruas: roadName,
-                keterangan: desc,
-                lebar: width,
-                desa_id: Number(selectedDesa),
-                eksisting_id: Number(selectedEksistingRoad),
-                kondisi_id: Number(selectedRoadCondition),
-                jenisjalan_id: Number(selectedRoadType),
-                paths: roadPath,
-                panjang: roadLength,
-            })
+            const payload =
+                road
+                    ? await editRoad(
+                        {
+                            kode_ruas: roadCode,
+                            nama_ruas: roadName,
+                            keterangan: desc,
+                            lebar: width,
+                            desa_id: Number(selectedDesa),
+                            eksisting_id: Number(selectedEksistingRoad),
+                            kondisi_id: Number(selectedRoadCondition),
+                            jenisjalan_id: Number(selectedRoadType),
+                            paths: roadPath,
+                            panjang: roadLength,
+                        }
+                        , roadId!!)
+                    : await addRoad({
+                        kode_ruas: roadCode,
+                        nama_ruas: roadName,
+                        keterangan: desc,
+                        lebar: width,
+                        desa_id: Number(selectedDesa),
+                        eksisting_id: Number(selectedEksistingRoad),
+                        kondisi_id: Number(selectedRoadCondition),
+                        jenisjalan_id: Number(selectedRoadType),
+                        paths: roadPath,
+                        panjang: roadLength,
+                    })
 
             if (payload.code === 200) {
-                toast.success("Berhasil menambahkan jalan");
+                toast.success(road ? "Berhasil mengedit jalan" : "Berhasil menambahkan jalan");
+                navigate("/road");
             }
 
         } catch (err: any) {
@@ -136,6 +211,16 @@ export default function RoadForm() {
                         </FormItem>
                     )}
                 />
+
+                <FormItem>
+
+                    <FormLabel>Panjang Jalan</FormLabel>
+                    <Input
+                        type={'number'}
+                        value={roadLength ?? 0}
+                        disabled
+                    />
+                </FormItem>
 
 
 

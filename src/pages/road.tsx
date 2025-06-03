@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button";
 import { Trash2Icon } from "lucide-react";
 import RoadInfo from "@/components/atoms/road-info";
 import { deleteRoad } from "@/services/deleteRoadService";
-import { set } from "zod";
+import { useNavigate } from "react-router-dom";
 
 export default function Road() {
+    const navigate = useNavigate()
     const [roads, setRoads] = useState<Roads[]>([]);
     const [selectedRoad, setSelectedRoad] = useState<Roads | null>(null);
 
@@ -106,7 +107,7 @@ export default function Road() {
             header: "Aksi",
             cell: ({ row }) => {
                 return <div className="flex gap-2">
-                    <Button className="bg-orange-400">Edit Jalan</Button>
+                    <Button className="bg-orange-400" onClick={() => navigate(`/edit-road/${row.original.id}`)}>Edit Jalan</Button>
                     <Button variant={"destructive"} onClick={() => deleteRoadHandle(row.original.id)}><Trash2Icon /></Button>
                 </div>
             }

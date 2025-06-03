@@ -62,7 +62,7 @@ export default function RoadPolyline({ road, isSelected, onPathClick }: Props) {
             if (pathElement) {
                 pathElement.style.transition = "stroke 0.4s ease-in-out"; // Match Tailwind duration-400
             }
-            console.log("Updating Polyline color to:", blinkColor);
+            // console.log("Updating Polyline color to:", blinkColor);
         }
     }, [blinkColor]);
 

@@ -52,6 +52,22 @@ export function RegionProvider({ children }: { children: ReactNode }) {
     return desa.filter(d => d.kec_id === Number(kecamatanId));
   };
 
+  const getRegionByDesaID = (desaId: number): RegionID => {
+    const desaItem = desa.find(d => d.id === desaId);
+    const kecamatanItem = kecamatan.find(k => k.id === desaItem?.kec_id);
+    const kabupatenItem = kabupaten.find(k => k.id === kecamatanItem?.kab_id);
+    const provinsiItem = provinsi.find(p => p.id === kabupatenItem?.prov_id);
+
+
+    // console.log(desaItem);
+    return {
+      provinsiId: provinsiItem?.id.toString() || "",
+      kabupatenId: kabupatenItem?.id.toString() || "",
+      kecamatanId: kecamatanItem?.id.toString() || "",
+      desaId: desaItem?.id.toString() || ""
+    }
+  }
+
   const getDesaById = (desaId: string): string => {
     const id = Number(desaId);
     if (isNaN(id)) return "Tidak ada desa";
@@ -82,7 +98,8 @@ export function RegionProvider({ children }: { children: ReactNode }) {
         getKabupatenByProvinsi,
         getKecamatanByKabupaten,
         getDesaByKecamatan,
-        getDesaById
+        getDesaById,
+        getRegionByDesaID
       }}
     >
       {children}

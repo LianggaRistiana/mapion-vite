@@ -28,6 +28,13 @@ type FieldConfig = {
   disabled?: boolean;
 };
 
+type RegionID = {
+  provinsiId: string;
+  kabupatenId: string;
+  kecamatanId: string;
+  desaId: string;
+}
+
 type Provinsi = {
   id: number;
   provinsi: string;
@@ -132,4 +139,6 @@ type RegionContext = {
   getDesaByKecamatan: (kecamatanId: string) => Desa[];
   
   getDesaById: (desaId: string) => string;
+
+  getRegionByDesaID : (desaId: number) => RegionID
 };

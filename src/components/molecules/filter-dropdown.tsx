@@ -25,10 +25,10 @@ export default function FilterDropdown({ data, title, selectedValue, setSelected
     const handleChange = (value: string) => {
         if (value === "__clear__") {
             setSelectedValue("");
-            console.log("Pilihan dihapus");
+            // console.log("Pilihan dihapus");
         } else {
             setSelectedValue(value);
-            console.log("Yang dipilih:", value);
+            // console.log("Yang dipilih:", value);
         }
     };
 

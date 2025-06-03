@@ -18,13 +18,11 @@ type RoadResponse = {
   status: string;
 };
 
-export const addRoad = async (data: RoadRequest): Promise<RoadResponse> => {
-  const res = await apiClient.post<RoadResponse>("/ruasjalan", data,
-  //    {
-  //   headers: {
-  //     Authorization: "",
-  //   },
-  // }
-);
+export const editRoad = async (
+  data: RoadRequest,
+  id: number
+): Promise<RoadResponse> => {
+  console.log(data);
+  const res = await apiClient.put<RoadResponse>("/ruasjalan/" + id, data);
   return res.data;
 };

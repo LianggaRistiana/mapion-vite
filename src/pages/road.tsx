@@ -9,7 +9,7 @@ import { useRegion } from "@/hooks/use-region";
 import useInitialFetch from "@/hooks/use-initial-fetch";
 import { useRoadStats } from "@/hooks/use-road-stats";
 import { Button } from "@/components/ui/button";
-import { FilterIcon, Search, Trash2Icon } from "lucide-react";
+import { FilterIcon, Trash2Icon } from "lucide-react";
 import RoadInfo from "@/components/atoms/road-info";
 import { deleteRoad } from "@/services/deleteRoadService";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
 import { useRegion } from "@/hooks/use-region";
 import { Button } from "../ui/button";
-import { X } from "lucide-react";
+import { MapIcon, MapPin, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 
@@ -22,9 +22,14 @@ export default function ({ road, onClose }: Props) {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 20, opacity: 0 }}
             >
-                <div>
-                    <p className="font-bold"> {road.nama_ruas}</p>
-                    <p className="text-sm"> {getDesaById(road.desa_id.toString())}</p>
+                <div className="flex flex-col gap-1">
+                    <div className="flex gap-1 items-center">
+                        <p className="font-bold"> {road.nama_ruas} ({Math.ceil(road.panjang)} meter)</p>
+                    </div>
+                    <div className="flex gap-1 items-center">
+                        <MapPin className="h-4 w-4" />
+                        <p className="text-sm"> {getDesaById(road.desa_id.toString())}</p>
+                    </div>
                 </div>
                 <Button className="" variant={"destructive"} onClick={onClose} size={'icon'}>
                     <X className="h-4 w-4" />

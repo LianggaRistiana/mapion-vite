@@ -9,7 +9,10 @@ import { useRegion } from "@/hooks/use-region";
 import useInitialFetch from "@/hooks/use-initial-fetch";
 import { useRoadStats } from "@/hooks/use-road-stats";
 import { Button } from "@/components/ui/button";
-import { FilterIcon, Trash2Icon } from "lucide-react";
+import {
+    FilterIcon,
+    Trash2Icon
+} from "lucide-react";
 import RoadInfo from "@/components/atoms/road-info";
 import { deleteRoad } from "@/services/deleteRoadService";
 import { useNavigate } from "react-router-dom";
@@ -174,7 +177,7 @@ export default function Road() {
     return <MainLayout>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 h-full pb-8 overflow-hidden
                   lg:auto-rows-fr grid-rows-2 lg:grid-rows-1">
-            <div className="flex flex-col gap-4 h-full">
+            <div className="flex flex-col gap-4 ">
                 <div className="w-full h-fit px-4 py-4 border rounded-lg">
                     <div className="flex items-center gap-1 mb-2">
                         <FilterIcon className="h-4 w-4" />
@@ -239,11 +242,11 @@ export default function Road() {
                         }
                     </AnimatePresence>
                 </div>
-                <div className="h-full">
+                <div className="">
                     <RoadTable columns={roadColumns} data={filteredRoads} onRowClick={(row) => setSelectedRoad(row)} selectedRow={selectedRoad} />
                 </div>
             </div>
-            {/* </div> */}
+
             <div className="w-full h-full overflow-hidden relative">
                 <Map roads={filteredRoads} selectedRoad={selectedRoad} onPathClick={(road) => setSelectedRoad(road)} />
                 <RoadInfo road={selectedRoad} onClose={() => setSelectedRoad(null)} />

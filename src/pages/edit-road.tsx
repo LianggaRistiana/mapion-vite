@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getRoadById } from "@/services/getRoadByIdService";
 import { toast } from "sonner";
 import { useRegion } from "@/hooks/use-region";
+import ListLoading from "@/components/atoms/list-loading";
 
 export default function EditRoad() {
     const { roadLength } = useRoadStats();
@@ -60,7 +61,7 @@ export default function EditRoad() {
                 {
                     road && regionID ? <ScrollArea className="h-[80vh] w-full rounded-md border p-4 relative">
                         <RoadForm road={road} regionId={regionID} roadId={Number(id)} />
-                    </ScrollArea> : "loading"
+                    </ScrollArea> : <ListLoading />
                 }
 
             </div>
@@ -70,7 +71,7 @@ export default function EditRoad() {
 
                 </div>
                 {
-                    road && regionID ? <Map isEditing oldRoad={road?.paths} roads={[]}></Map> : "loading"
+                    road && regionID ? <Map isEditing oldRoad={road?.paths} roads={[]}></Map> : ""
                 }
                 {/* <Map isEditing oldRoad={road?.paths} roads={[]}></Map> */}
             </div>

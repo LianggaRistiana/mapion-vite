@@ -3,6 +3,7 @@ import { MapIcon, PlusIcon, MapPinnedIcon } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -10,6 +11,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Button } from "../ui/button"
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { logout } from "@/services/logutService";
 
 const items = [
   {
@@ -30,6 +35,19 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const res = await logout()
+      localStorage.removeItem('token')
+      toast.success(res.meta.message || 'Berhasil logout')
+      navigate('/login')
+    } catch (err: any) {
+      toast.error(err.message ?? 'Gagal logout')
+    }
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -50,7 +68,13 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
       </SidebarContent>
+      <SidebarFooter>
+        <Button className="w-full" onClick={handleLogout}>
+          Keluar
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   )
 }

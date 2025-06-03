@@ -1,6 +1,6 @@
 import { useRegion } from "@/hooks/use-region";
 import { Button } from "../ui/button";
-import { MapIcon, MapPin, X } from "lucide-react";
+import { MapPin, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 

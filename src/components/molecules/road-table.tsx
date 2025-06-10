@@ -33,7 +33,7 @@ export function RoadTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
 
     const [pageSize, setPageSize] = useState(9);
-
+    
 
     const table = useReactTable({
         data,
@@ -62,9 +62,8 @@ export function RoadTable<TData, TValue>({
 
 
     return (
-        <div>
-
-            <div className="rounded-md border h-[550px] overflow-y-auto">
+        <div className="h-full flex flex-col ">
+            <div className="rounded-md border flex-1 overflow-y-auto">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -112,11 +111,11 @@ export function RoadTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-between py-4">
+            <div className="flex items-center justify-between ">
                 <div className="text-sm text-primary">
                     Halaman {currentPage} dari {totalPages}
                 </div>
-                <div className="flex items-center justify-end space-x-2 py-4">
+                <div className="flex items-center justify-end space-x-2 pt-4">
                     <Button
                         size="icon"
                         onClick={() => table.previousPage()}

@@ -36,6 +36,7 @@ const items = [
 
 export function AppSidebar() {
   const navigate = useNavigate();
+  const currentPath = window.location.pathname;
 
   const handleLogout = async () => {
     try {
@@ -57,7 +58,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={currentPath === item.url}>
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

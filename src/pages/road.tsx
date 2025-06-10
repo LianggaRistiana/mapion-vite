@@ -175,9 +175,11 @@ export default function Road() {
     }, []);
 
     return <MainLayout>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 h-full pb-8 overflow-hidden
-                  lg:auto-rows-fr grid-rows-2 lg:grid-rows-1">
-            <div className="flex flex-col gap-4 ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 h-full pb-4 overflow-hidden
+                  lg:auto-rows-fr grid-rows-2 lg:grid-rows-1 ">
+            <div className="flex flex-col gap-4 h-full">
+
+                {/* Filter box */}
                 <div className="w-full h-fit px-4 py-4 border rounded-lg">
                     <div className="flex items-center gap-1 mb-2">
                         <FilterIcon className="h-4 w-4" />
@@ -194,8 +196,6 @@ export default function Road() {
                                 }
                             }}
                         />
-
-
                     </div>
                     <div className="flex gap-4">
                         <FilterDropdown
@@ -242,12 +242,26 @@ export default function Road() {
                         }
                     </AnimatePresence>
                 </div>
-                <div className="">
-                    <RoadTable columns={roadColumns} data={filteredRoads} onRowClick={(row) => setSelectedRoad(row)} selectedRow={selectedRoad} />
+
+                {/* Table area */}
+
+                {/* Table area */}
+                <div className="flex-1 overflow-hidden">
+                    <div className="h-full overflow-auto">
+                        <RoadTable
+                            columns={roadColumns}
+                            data={filteredRoads}
+                            onRowClick={(row) => setSelectedRoad(row)}
+                            selectedRow={selectedRoad}
+                        />
+                    </div>
                 </div>
+                {/* <div className="h-full">
+                    <RoadTable columns={roadColumns} data={filteredRoads} onRowClick={(row) => setSelectedRoad(row)} selectedRow={selectedRoad} />
+                </div> */}
             </div>
 
-            <div className="w-full h-full overflow-hidden relative">
+            <div className="w-full h-full overflow-hidden relative border rounded-lg ">
                 <Map roads={filteredRoads} selectedRoad={selectedRoad} onPathClick={(road) => setSelectedRoad(road)} />
                 <RoadInfo road={selectedRoad} onClose={() => setSelectedRoad(null)} />
             </div>

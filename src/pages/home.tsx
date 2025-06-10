@@ -1,4 +1,6 @@
+import Legend from "@/components/atoms/legend";
 import Map from "@/components/atoms/map";
+import RoadInfo from "@/components/atoms/road-info";
 import { useRegion } from "@/hooks/use-region";
 import MainLayout from "@/layouts/main-layout";
 import { getRegion } from "@/services/getRegionService";
@@ -43,13 +45,17 @@ export default function Home() {
         fetchRoads();
     }, []);
 
+    const [selectedRoad, setSelectedRoad] = useState<Roads | null>(null);
+
 
     return (
         <MainLayout>
-            <div className="h-screen w-full flex flex-col bg-red-500">
+            <div className="h-full w-full flex flex-col bg-red-500">
                 {/* <TopBar /> */}
-                <div className="flex-1 relative z-0 w-full overflow-hidden">
-                    <Map roads={roads} />
+                <Legend />
+                <div className="h-full relative z-0 w-full overflow-hidden">
+                    <Map roads={roads} selectedRoad={selectedRoad} onPathClick={(road) => setSelectedRoad(road)} />
+                    <RoadInfo road={selectedRoad} onClose={() => setSelectedRoad(null)} />
                 </div>
 
             </div>

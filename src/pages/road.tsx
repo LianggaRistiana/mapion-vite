@@ -158,10 +158,11 @@ export default function Road() {
             }
         },
         {
-            header: "Aksi",
+            id: "actions", // beri id unik
+            header: () => <div className="text-right">Aksi</div>,
             cell: ({ row }) => {
                 return <div className="flex gap-2">
-                    <Button className="bg-orange-400" onClick={() => navigate(`/edit-road/${row.original.id}`)}>Edit Jalan</Button>
+                    <Button className="bg-orange-400 hover:bg-orange-200" onClick={() => navigate(`/edit-road/${row.original.id}`)}>Edit Jalan</Button>
                     <Button variant={"destructive"} onClick={() => deleteRoadHandle(row.original.id)}><Trash2Icon /></Button>
                 </div>
             }

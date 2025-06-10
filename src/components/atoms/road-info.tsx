@@ -1,7 +1,8 @@
 import { useRegion } from "@/hooks/use-region";
 import { Button } from "../ui/button";
-import { MapPin, X } from "lucide-react";
+import { MapPin, Pencil, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 
 type Props = {
@@ -14,6 +15,9 @@ export default function ({ road, onClose }: Props) {
     const {
         getDesaById
     } = useRegion();
+
+    const navigate = useNavigate();
+
     return <AnimatePresence>
         {
             road && <motion.div
@@ -31,9 +35,14 @@ export default function ({ road, onClose }: Props) {
                         <p className="text-sm"> {getDesaById(road.desa_id.toString())}</p>
                     </div>
                 </div>
-                <Button className="" variant={"destructive"} onClick={onClose} size={'icon'}>
-                    <X className="h-4 w-4" />
-                </Button>
+                <div className="flex gap-2" >
+                    <Button variant={'ghost'} size={'icon'} onClick={() => navigate(`/edit-road/${road.id}`)}>
+                        <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button className="" variant={"destructive"} onClick={onClose} size={'icon'}>
+                        <X className="h-4 w-4" />
+                    </Button>
+                </div>
 
             </motion.div>
         }

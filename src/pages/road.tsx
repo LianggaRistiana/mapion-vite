@@ -288,8 +288,6 @@ export default function Road() {
                 </div>
 
                 {/* Table area */}
-
-                {/* Table area */}
                 <div className="flex-1 overflow-hidden">
                     <div className="h-full overflow-auto">
                         <RoadTable

@@ -9,6 +9,7 @@ import AddRoad from './pages/add-road';
 import { RoadStatProvider } from './Context/RoadStatsContext';
 import Road from './pages/road';
 import EditRoad from './pages/edit-road';
+import PrivateRoute from './lib/PrivateRoute';
 
 export default function App() {
   return (
@@ -19,12 +20,12 @@ export default function App() {
             <Route index element={<Welcome />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="home" element={
-              <Home />
-            } />
-            <Route path="add-road" element={<AddRoad />} />
-            <Route path="edit-road/:id" element={<EditRoad />} />
-            <Route path="road" element={<Road />} />
+            <Route element={<PrivateRoute />} >
+              <Route path="home" element={<Home />} />
+              <Route path="add-road" element={<AddRoad />} />
+              <Route path="edit-road/:id" element={<EditRoad />} />
+              <Route path="road" element={<Road />} />
+            </Route>
           </Routes>
           <Toaster />
         </BrowserRouter>

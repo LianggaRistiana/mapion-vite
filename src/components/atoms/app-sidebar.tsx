@@ -15,6 +15,7 @@ import { Button } from "../ui/button"
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { logout } from "@/services/logutService";
+import { ConfirmDialog } from "./confirm-dialog";
 
 const items = [
   {
@@ -72,9 +73,15 @@ export function AppSidebar() {
 
       </SidebarContent>
       <SidebarFooter>
-        <Button className="w-full" onClick={handleLogout}>
-          Keluar
-        </Button>
+        <ConfirmDialog
+          title="Apakah anda yakin ingin keluar?"
+          description="aksi ini akan mengeluarkan akun anda saat ini dari website"
+          onConfirm={handleLogout}
+        >
+          <Button className="w-full">
+            Keluar
+          </Button>
+        </ConfirmDialog>
       </SidebarFooter>
     </Sidebar>
   )

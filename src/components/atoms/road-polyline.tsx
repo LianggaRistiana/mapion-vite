@@ -1,5 +1,5 @@
 // components/RoadPolyline.tsx
-import { Polyline } from "react-leaflet";
+import { Polyline, Tooltip } from "react-leaflet";
 import polyline from "@mapbox/polyline";
 import { useEffect, useRef, useState } from "react";
 
@@ -79,6 +79,7 @@ export default function RoadPolyline({ road, isSelected, onPathClick }: Props) {
                 }}
             // className="transition-stroke duration-400 ease-in-out"
             >
+                <Tooltip sticky >{road.nama_ruas}</Tooltip>
             </Polyline>
 
         </>

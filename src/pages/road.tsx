@@ -11,6 +11,7 @@ import { useRoadStats } from "@/hooks/use-road-stats";
 import { Button } from "@/components/ui/button";
 import {
     FilterIcon,
+    MapPin,
     Trash2Icon
 } from "lucide-react";
 import RoadInfo from "@/components/atoms/road-info";
@@ -19,6 +20,13 @@ import { useNavigate } from "react-router-dom";
 import FilterDropdown from "@/components/molecules/filter-dropdown";
 import { AnimatePresence, motion } from "motion/react";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { ConfirmDialog } from "@/components/atoms/confirm-dialog";
 
 export default function Road() {
     const navigate = useNavigate()
@@ -121,26 +129,30 @@ export default function Road() {
             cell: ({ row }) => {
                 return <div>
                     <p className="">{row.original.nama_ruas}</p>
-                    <p className="font-sm opacity-50">{getDesaById(row.original.desa_id.toString())}</p>
+                    <div className="flex gap-1 items-center">
+                        <MapPin className="h-3 w-3 opacity-50"></MapPin>
+                        <p className="font-sm opacity-50">{getDesaById(row.original.desa_id.toString())}</p>
+                    </div>
                 </div>
             }
-        },
-        {
-            accessorKey: "keterangan",
-            header: "Keterangan",
         },
         {
             accessorKey: 'jenisjalan_id',
             header: "Jenis Jalan",
             cell: ({ row }) => {
-                return getRoadTypeById(row.original.jenisjalan_id)
+                return <Badge className={`w-full ${row.original.jenisjalan_id == 1 ? "border-green-600 border-2" : row.original.jenisjalan_id == 2 ? "border-blue-500 border-2" : row.original.jenisjalan_id == 3 ? "border-red-500 border-2" : ""}`} variant={"secondary"}>
+                    {getRoadTypeById(row.original.jenisjalan_id)}
+                </Badge>
+
             }
         },
         {
             accessorKey: "kondisi_id",
             header: "Kondisi Jalan",
             cell: ({ row }) => {
-                return getRoadConditionById(row.original.kondisi_id)
+                return <Badge className={'w-full'} variant={row.original.kondisi_id == 3 ? "destructive" : "secondary"}>
+                    {getRoadConditionById(row.original.kondisi_id)}
+                </Badge>
             }
         },
         {
@@ -158,12 +170,43 @@ export default function Road() {
             }
         },
         {
+            accessorKey: "lebar",
+            header: "Lebar",
+            cell: ({ row }) => {
+                return Math.ceil(row.original.lebar) + " meter"
+            }
+        },
+
+        {
+            accessorKey: "keterangan",
+            header: "Keterangan",
+            cell: ({ row }) => {
+                return <Tooltip>
+                    <TooltipTrigger>
+                        <div className="max-w-[50px] overflow-hidden text-ellipsis">
+                            {row.original.keterangan}
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>{row.original.keterangan}</p>
+                    </TooltipContent>
+                </Tooltip>
+
+            }
+        },
+        {
             id: "actions", // beri id unik
             header: () => <div className="text-right">Aksi</div>,
             cell: ({ row }) => {
                 return <div className="flex gap-2">
                     <Button className="bg-orange-400 hover:bg-orange-200" onClick={() => navigate(`/edit-road/${row.original.id}`)}>Edit Jalan</Button>
-                    <Button variant={"destructive"} onClick={() => deleteRoadHandle(row.original.id)}><Trash2Icon /></Button>
+                    <ConfirmDialog
+                    title={`Apakah anda yakin ingin menganghapus ruas jalan ${row.original.nama_ruas}?`}
+                    description="aksi ini tidak dapat dikembalikan"
+                    onConfirm={() => deleteRoadHandle(row.original.id)}
+                    >
+                        <Button variant={"destructive"} onClick={(e) => e.stopPropagation()} ><Trash2Icon /></Button>
+                    </ConfirmDialog>
                 </div>
             }
         }
@@ -198,7 +241,7 @@ export default function Road() {
                             }}
                         />
                     </div>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 overflow-x-auto">
                         <FilterDropdown
                             title="Jenis jalan"
                             selectedValue={typeLayer}

@@ -2,7 +2,7 @@
 
 export default function Legend() {
     return (
-        <div className="absolute z-20 right-2 top-12 flex flex-col gap-2">
+        <div className="absolute z-20 right-2 top-10 flex flex-col gap-2">
             <div className="bg-background w-[150px] h-fit px-2 rounded-sm py-2 flex flex-col gap-2">
                 <div className="flex gap-2 items-center">
                     <div className="w-[20px] h-[20px] bg-red-500"> </div>
